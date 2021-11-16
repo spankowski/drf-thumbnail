@@ -55,3 +55,9 @@ class BasicPictureSerializer(serializers.HyperlinkedModelSerializer):
         source='image',
         read_only=True
     )
+
+
+class UploadPictureSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = TempPictureModel
+        fields = ('title','image',)

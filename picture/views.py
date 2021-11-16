@@ -1,14 +1,21 @@
+from django.db.models.fields import NOT_PROVIDED
 from .serializer import BasicPictureSerializer, PremiumPictureSerializer, EnterprisePictureSerializer
+from .serializer import UploadPictureSerializer
 from .models import TempPictureModel
 from rest_framework import routers, serializers, viewsets
-from django.db.models import BooleanField, Case, Q, When
+from django.db.models import Q
 from django.utils import timezone
 from django.contrib.auth.models import Group
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser 
+from rest_framework.authentication import TokenAuthentication
+
 
 # A larger version of the image, allows writing
 
 class TestModelViewSet(viewsets.ModelViewSet):
     queryset = TempPictureModel.objects.all()
+    permission_classes = [IsAuthenticated]
+    authentication_classes = (TokenAuthentication,)
     serializer_class = BasicPictureSerializer
     serializer_detail_premium = PremiumPictureSerializer
     serializer_class_enterprise = EnterprisePictureSerializer
@@ -36,3 +43,11 @@ class TestModelViewSet(viewsets.ModelViewSet):
         tmp = queryset.filter(user_id=id)
         print(timezone.now())
         return tmp
+
+class UploadModelViewSet(viewsets.ModelViewSet):
+    queryset = TempPictureModel.objects.none()
+    permission_classes = [AllowAny]
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = UploadPictureSerializer
+
+    

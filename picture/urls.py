@@ -9,11 +9,12 @@ from django.contrib.auth.models import Group
 from django.db.models import BooleanField, Case, Q, When
 from django.utils import timezone
 from django.db.models.functions import Now
-from .views import TestModelViewSet
+from .views import TestModelViewSet, UploadModelViewSet
 
 
 router = routers.DefaultRouter()
 router.register(r'pictures', TestModelViewSet)
+router.register(r'upload', UploadModelViewSet)
 
 urlpatterns = [
     url(r'', include(router.urls)),
